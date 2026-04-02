@@ -1,0 +1,130 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: kflashbackconfigs.flashback.io
+  labels:
+    app.kubernetes.io/name: kflashback
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+spec:
+  group: flashback.io
+  names:
+    kind: KFlashbackConfig
+    listKind: KFlashbackConfigList
+    plural: kflashbackconfigs
+    singular: kflashbackconfig
+    shortNames:
+      - fbcfg
+  scope: Cluster
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Backend
+          type: string
+          jsonPath: .spec.storage.backend
+        - name: API Address
+          type: string
+          jsonPath: .spec.server.apiAddress
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      schema:
+        openAPIV3Schema:
+          description: >-
+            KFlashbackConfig is the Schema for the kflashbackconfigs API.
+            It is a cluster-scoped singleton that configures the kflashback controller.
+          type: object
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: KFlashbackConfigSpec defines the desired configuration for kflashback.
+              type: object
+              properties:
+                storage:
+                  description: Storage configures the storage backend.
+                  type: object
+                  properties:
+                    backend:
+                      description: 'Storage backend to use (e.g. "sqlite", "postgres").'
+                      type: string
+                      default: sqlite
+                    dsn:
+                      description: >-
+                        Data source name or file path for the storage backend.
+                        For sqlite this is a file path, for postgres a connection string.
+                        Avoid putting credentials directly here — use credentialsSecret instead.
+                      type: string
+                      default: /data/kflashback.db
+                    credentialsSecret:
+                      description: >-
+                        References a Kubernetes Secret containing the storage DSN or credentials.
+                        The controller resolves credentials in priority order:
+                        (1) KFLASHBACK_STORAGE_DSN env var,
+                        (2) this Secret reference,
+                        (3) spec.storage.dsn,
+                        (4) CLI --storage-dsn flag.
+                      type: object
+                      required: [name, key]
+                      properties:
+                        name:
+                          description: Name of the Secret.
+                          type: string
+                        namespace:
+                          description: >-
+                            Namespace of the Secret.
+                            Defaults to kflashback-system if not set.
+                          type: string
+                        key:
+                          description: Key within the Secret whose value contains the DSN.
+                          type: string
+                          default: dsn
+                server:
+                  description: Server configures the API and metrics servers.
+                  type: object
+                  properties:
+                    apiAddress:
+                      description: Bind address for the REST API and UI server.
+                      type: string
+                      default: ":9090"
+                    metricsAddress:
+                      description: Bind address for the metrics endpoint.
+                      type: string
+                      default: ":8080"
+                    healthAddress:
+                      description: Bind address for the health probe endpoint.
+                      type: string
+                      default: ":8081"
+                controller:
+                  description: Controller configures controller behaviour.
+                  type: object
+                  properties:
+                    leaderElection:
+                      description: Enable leader election for HA deployments.
+                      type: boolean
+                      default: false
+                    reconcileInterval:
+                      description: How often policies are re-reconciled for retention cleanup.
+                      type: string
+                      default: "5m"
+            status:
+              description: KFlashbackConfigStatus defines the observed state of the configuration.
+              type: object
+              properties:
+                active:
+                  type: boolean
+                storageBackend:
+                  type: string
+                message:
+                  type: string
+                lastApplied:
+                  type: string
+                  format: date-time
+      subresources:
+        status: {}

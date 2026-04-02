@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kflashback-controller
+  labels:
+    app.kubernetes.io/name: kflashback
+    app.kubernetes.io/component: controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kflashback-controller
+subjects:
+  - kind: ServiceAccount
+    name: kflashback-controller
+    namespace: kflashback-system

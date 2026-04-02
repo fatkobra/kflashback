@@ -1,0 +1,41 @@
+# Binaries
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go
+*.test
+cover.out
+vendor/
+
+# Database
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# UI
+ui/node_modules/
+ui/dist/
+ui/.env.local
+
+# Docker
+.docker/
+
+# Temp
+tmp/
+*.log

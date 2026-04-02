@@ -1,0 +1,40 @@
+apiVersion: flashback.io/v1alpha1
+kind: KFlashbackConfig
+metadata:
+  name: kflashback
+spec:
+  storage:
+    backend: postgres
+    # Do NOT put credentials in dsn — use credentialsSecret instead.
+    # dsn is only used as a fallback if credentialsSecret is not set.
+    dsn: "postgres://localhost:5432/kflashback?sslmode=disable"
+    credentialsSecret:
+      name: kflashback-db-credentials
+      namespace: kflashback-system
+      key: dsn
+  server:
+    apiAddress: ":9090"
+    metricsAddress: ":8080"
+    healthAddress: ":8081"
+  controller:
+    leaderElection: true
+    reconcileInterval: "5m"
+---
+# The Secret containing the full PostgreSQL connection string.
+# Create this BEFORE applying the KFlashbackConfig above.
+#
+# Example:
+#   kubectl create secret generic kflashback-db-credentials \
+#     --namespace=kflashback-system \
+#     --from-literal=dsn='postgres://kflashback:changeme@postgres.kflashback-system.svc:5432/kflashback?sslmode=require'
+#
+# For cloud-managed databases (AWS RDS, GCP CloudSQL, Azure, etc.),
+# set the dsn value to your cloud connection string.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kflashback-db-credentials
+  namespace: kflashback-system
+type: Opaque
+stringData:
+  dsn: "postgres://kflashback:changeme@postgres.kflashback-system.svc:5432/kflashback?sslmode=require"
