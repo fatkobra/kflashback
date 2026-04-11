@@ -71,7 +71,7 @@ jobs:
         run: npm ci
 
       - name: Type check
-        run: ./node_modules/.bin/tsc --noEmit
+        run: npx --no-install tsc --noEmit
 
       - name: Build
         run: npm run build
