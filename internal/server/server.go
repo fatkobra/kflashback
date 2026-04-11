@@ -134,7 +134,7 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleHealthz(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ok"))
+	_, _ = w.Write([]byte("ok"))
 }
 
 func (s *Server) handleReadyz(w http.ResponseWriter, _ *http.Request) {
@@ -144,5 +144,5 @@ func (s *Server) handleReadyz(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ok"))
+	_, _ = w.Write([]byte("ok"))
 }

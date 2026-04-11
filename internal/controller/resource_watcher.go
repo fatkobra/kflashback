@@ -120,7 +120,7 @@ func (rw *ResourceWatcher) watchResource(
 		gvr:        gvr,
 	}
 
-	informer.AddEventHandler(handler)
+	_, _ = informer.AddEventHandler(handler)
 
 	log.Info("informer started, watching for changes")
 	informer.Run(ctx.Done())

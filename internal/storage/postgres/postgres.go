@@ -459,7 +459,6 @@ func buildHistoryWhere(q storage.ResourceHistoryQuery) (string, []interface{}) {
 	if q.Until != nil {
 		conditions = append(conditions, fmt.Sprintf("timestamp <= $%d", paramIdx))
 		args = append(args, q.Until.UTC())
-		paramIdx++
 	}
 
 	return strings.Join(conditions, " AND "), args
@@ -493,7 +492,6 @@ func buildResourceListWhere(q storage.ResourceListQuery) (string, []interface{})
 	if q.IsDeleted != nil {
 		conditions = append(conditions, fmt.Sprintf("is_deleted = $%d", paramIdx))
 		args = append(args, *q.IsDeleted)
-		paramIdx++
 	}
 
 	return strings.Join(conditions, " AND "), args

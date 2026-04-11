@@ -353,13 +353,13 @@ func (s *Store) GetStats(ctx context.Context) (*storage.StorageStats, error) {
 		"SELECT page_count * page_size FROM pragma_page_count(), pragma_page_size()").Scan(&stats.StorageBytes)
 	if err != nil {
 		// Fallback: estimate from data
-		s.db.QueryRowContext(ctx,
+		_ = s.db.QueryRowContext(ctx,
 			"SELECT COALESCE(SUM(size_bytes), 0) FROM resource_revisions").Scan(&stats.StorageBytes)
 	}
 
 	var oldestStr, newestStr sql.NullString
-	s.db.QueryRowContext(ctx, "SELECT MIN(timestamp) FROM resource_revisions").Scan(&oldestStr)
-	s.db.QueryRowContext(ctx, "SELECT MAX(timestamp) FROM resource_revisions").Scan(&newestStr)
+	_ = s.db.QueryRowContext(ctx, "SELECT MIN(timestamp) FROM resource_revisions").Scan(&oldestStr)
+	_ = s.db.QueryRowContext(ctx, "SELECT MAX(timestamp) FROM resource_revisions").Scan(&newestStr)
 	if oldestStr.Valid && oldestStr.String != "" {
 		if t := parseSQLiteTime(oldestStr.String); t != nil {
 			stats.OldestRevision = t

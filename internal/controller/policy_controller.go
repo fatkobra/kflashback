@@ -55,7 +55,7 @@ func (r *FlashbackPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	if err := r.Watcher.Reconcile(ctx, &policy); err != nil {
 		logger.Error(err, "failed to reconcile watchers")
 		r.setCondition(&policy, "Ready", metav1.ConditionFalse, "WatcherError", err.Error())
-		r.updateStatus(ctx, &policy)
+		_ = r.updateStatus(ctx, &policy)
 		return ctrl.Result{RequeueAfter: 30 * time.Second}, err
 	}
 
