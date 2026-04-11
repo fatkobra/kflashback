@@ -70,10 +70,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Type check
-        run: npm run typecheck
-
-      - name: Build
+      - name: Build (includes tsc type check)
         run: npm run build
 
   # ──────────────────────────────────────────────
