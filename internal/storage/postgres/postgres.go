@@ -372,8 +372,8 @@ func (s *Store) GetStats(ctx context.Context) (*storage.StorageStats, error) {
 	}
 
 	var oldest, newest sql.NullTime
-	s.db.QueryRowContext(ctx, "SELECT MIN(timestamp) FROM resource_revisions").Scan(&oldest)
-	s.db.QueryRowContext(ctx, "SELECT MAX(timestamp) FROM resource_revisions").Scan(&newest)
+	_ = s.db.QueryRowContext(ctx, "SELECT MIN(timestamp) FROM resource_revisions").Scan(&oldest)
+	_ = s.db.QueryRowContext(ctx, "SELECT MAX(timestamp) FROM resource_revisions").Scan(&newest)
 	if oldest.Valid {
 		stats.OldestRevision = &oldest.Time
 	}

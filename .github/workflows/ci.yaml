@@ -71,7 +71,7 @@ jobs:
         run: npm ci
 
       - name: Type check
-        run: node node_modules/typescript/bin/tsc --noEmit
+        run: npm run typecheck
 
       - name: Build
         run: npm run build
