@@ -477,7 +477,7 @@ func TestListTrackedResources_AllFilters(t *testing.T) {
 	})
 
 	// Filter by namespace
-	res, total, err := s.ListTrackedResources(ctx, storage.ResourceListQuery{Namespace: "prod"})
+	_, total, err := s.ListTrackedResources(ctx, storage.ResourceListQuery{Namespace: "prod"})
 	if err != nil {
 		t.Fatalf("ListTrackedResources: %v", err)
 	}
@@ -486,7 +486,7 @@ func TestListTrackedResources_AllFilters(t *testing.T) {
 	}
 
 	// Filter by policy
-	res, total, _ = s.ListTrackedResources(ctx, storage.ResourceListQuery{PolicyName: "pol-y"})
+	res, total, _ := s.ListTrackedResources(ctx, storage.ResourceListQuery{PolicyName: "pol-y"})
 	if total != 1 || res[0].UID != "uid-b" {
 		t.Errorf("policy filter: total=%d, want 1", total)
 	}

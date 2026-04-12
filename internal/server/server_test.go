@@ -469,8 +469,9 @@ func TestWriteError(t *testing.T) {
 
 func TestSpaHandler_ServesIndex(t *testing.T) {
 	dir := t.TempDir()
-	// Create index.html
-	os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644)
+	if err := os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	handler := spaHandler{staticPath: dir, indexPath: "index.html"}
 	req := httptest.NewRequest("GET", "/some/spa/route", nil)
@@ -487,9 +488,15 @@ func TestSpaHandler_ServesIndex(t *testing.T) {
 
 func TestSpaHandler_ServesStaticFile(t *testing.T) {
 	dir := t.TempDir()
-	os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644)
-	os.MkdirAll(dir+"/assets", 0755)
-	os.WriteFile(dir+"/assets/style.css", []byte("body{}"), 0644)
+	if err := os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(dir+"/assets", 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(dir+"/assets/style.css", []byte("body{}"), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	handler := spaHandler{staticPath: dir, indexPath: "index.html"}
 	req := httptest.NewRequest("GET", "/assets/style.css", nil)
@@ -503,8 +510,12 @@ func TestSpaHandler_ServesStaticFile(t *testing.T) {
 
 func TestSpaHandler_DirectoryFallsBackToIndex(t *testing.T) {
 	dir := t.TempDir()
-	os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644)
-	os.MkdirAll(dir+"/subdir", 0755)
+	if err := os.WriteFile(dir+"/index.html", []byte("<html>app</html>"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(dir+"/subdir", 0755); err != nil {
+		t.Fatal(err)
+	}
 
 	handler := spaHandler{staticPath: dir, indexPath: "index.html"}
 	req := httptest.NewRequest("GET", "/subdir", nil)
