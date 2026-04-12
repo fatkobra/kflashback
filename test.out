@@ -1,0 +1,10 @@
+	github.com/kflashback/kflashback/api/v1alpha1		coverage: 0.0% of statements
+	github.com/kflashback/kflashback/cmd/kflashback		coverage: 0.0% of statements
+ok  	github.com/kflashback/kflashback/internal	1.995s	coverage: [no statements]
+ok  	github.com/kflashback/kflashback/internal/config	2.923s	coverage: 7.0% of statements
+	github.com/kflashback/kflashback/internal/controller		coverage: 0.0% of statements
+ok  	github.com/kflashback/kflashback/internal/diff	1.578s	coverage: 87.1% of statements
+ok  	github.com/kflashback/kflashback/internal/server	4.818s	coverage: 88.2% of statements
+	github.com/kflashback/kflashback/internal/storage		coverage: 0.0% of statements
+	github.com/kflashback/kflashback/internal/storage/postgres		coverage: 0.0% of statements
+ok  	github.com/kflashback/kflashback/internal/storage/sqlite	3.071s	coverage: 88.0% of statements
