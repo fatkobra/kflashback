@@ -548,4 +548,3 @@ func TestGetTrackedResource_NotFound(t *testing.T) {
 		t.Error("expected nil for nonexistent resource")
 	}
 }
-

@@ -27,6 +27,9 @@ jobs:
       - name: Go mod verify
         run: go mod verify
 
+      - name: Go fmt check
+        run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
+
       - name: Go vet
         run: go vet ./...
 
